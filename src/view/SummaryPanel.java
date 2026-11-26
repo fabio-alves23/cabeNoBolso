@@ -10,6 +10,7 @@ public class SummaryPanel extends JPanel {
     private final PlanningController controller;
     private final JTextArea summaryArea = new JTextArea();
 
+    // Inicializa o painel de resumo financeiro
     public SummaryPanel(PlanningController controller) {
         this.controller = controller;
 

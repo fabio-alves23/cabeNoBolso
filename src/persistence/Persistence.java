@@ -5,9 +5,9 @@ import model.PlanningException;
 
 public interface Persistence {
 
-    // Saves the complete plan
+    // Salva o planejamento completo
     void save(TripPlan plan) throws PlanningException;
 
-    // Loads a saved plan
+    // Carrega um planejamento salvo
     TripPlan load() throws PlanningException;
 }

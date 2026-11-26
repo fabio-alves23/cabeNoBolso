@@ -78,6 +78,7 @@ public class PlanningController {
                 : "Opcional (prioridade " + expense.getPriority() + ")";
     }
 
+    // Cria a despesa conforme o tipo e os participantes selecionados
     private Expense createExpense(String description, String amount,
                                   boolean perPerson, List<Integer> codes,
                                   String priority) throws PlanningException {
@@ -100,6 +101,7 @@ public class PlanningController {
 
     // RESUMO
 
+    // Monta o resumo geral das despesas e dos orçamentos
     public String generateSummary() {
         StringBuilder result = new StringBuilder("DESPESAS\n");
 
@@ -139,6 +141,7 @@ public class PlanningController {
 
     // SIMULADOR
 
+    // Executa a simulação e apresenta o resultado sem alterar o plano
     public String simulate() throws PlanningException {
         SimulationResult simulation = simulator.simulate(plan);
         StringBuilder result = new StringBuilder("RESULTADO DA SIMULAÇÃO\n");

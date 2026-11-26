@@ -10,6 +10,7 @@ public class MainWindow extends JFrame {
 
     private final PlanningController controller;
 
+    // Armazena as referências dos painéis da interface
     private final ParticipantPanel participantPanel;
     private final ExpensePanel expensePanel;
     private final SummaryPanel summaryPanel;
@@ -109,6 +110,7 @@ public class MainWindow extends JFrame {
         }
     }
 
+    // Define uma ação que pode gerar erros do planejamento
     @FunctionalInterface
     private interface Action {
         void run() throws PlanningException;

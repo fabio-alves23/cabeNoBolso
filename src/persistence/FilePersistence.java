@@ -1,3 +1,4 @@
+
 package persistence;
 
 import model.TripPlan;
@@ -14,11 +15,13 @@ public class FilePersistence implements Persistence {
 
     private final String filePath;
 
+    // Define o caminho do arquivo utilizado para salvar os dados
     public FilePersistence(String filePath) {
         this.filePath = filePath;
     }
 
     @Override
+    // Salva o planejamento completo no arquivo
     public void save(TripPlan plan) throws PlanningException {
         try (ObjectOutputStream output =
                      new ObjectOutputStream(new FileOutputStream(filePath))) {
@@ -32,6 +35,7 @@ public class FilePersistence implements Persistence {
     }
 
     @Override
+    // Recupera o planejamento salvo no arquivo
     public TripPlan load() throws PlanningException {
         try (ObjectInputStream input =
                      new ObjectInputStream(new FileInputStream(filePath))) {

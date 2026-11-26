@@ -16,6 +16,7 @@ public class PerPersonExpense extends Expense {
     public Map<Integer, Long> calculateShares() {
         Map<Integer, Long> shares = new LinkedHashMap<>();
 
+        // Cada participante paga o valor integral da despesa
         for (Participant participant : getInvolvedParticipants()) {
             shares.put(participant.getCode(), getAmount());
         }

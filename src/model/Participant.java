@@ -6,6 +6,7 @@ public class Participant implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    // Identificação fixa e dados editáveis do participante
     private final int code;
     private String name;
     private long budget;

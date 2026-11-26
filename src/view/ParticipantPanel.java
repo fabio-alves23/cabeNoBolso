@@ -16,6 +16,7 @@ public class ParticipantPanel extends JPanel {
     private final JTextField nameField = new JTextField(15);
     private final JTextField budgetField = new JTextField(15);
 
+    // Define as colunas e impede a edição direta pela tabela
     private final DefaultTableModel tableModel = new DefaultTableModel(
             new String[]{"Código", "Nome", "Limite de gastos"}, 0) {
         @Override
@@ -121,6 +122,7 @@ public class ParticipantPanel extends JPanel {
                 tableModel.getValueAt(row, 0).toString());
     }
 
+    // Preenche os campos com os dados do participante selecionado
     private void fillFields() {
         int row = table.getSelectedRow();
 
@@ -147,6 +149,7 @@ public class ParticipantPanel extends JPanel {
         }
     }
 
+    // Executa operações de cadastro e alteração, atualizando a interface
     private void execute(Action action) {
         try {
             action.run();

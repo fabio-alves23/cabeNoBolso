@@ -40,6 +40,7 @@ public class SimulatorPanel extends JPanel {
         }
     }
 
+    // Limpa o resultado quando o planejamento é atualizado
     public void updateSimulation() {
         resultArea.setText("");
     }

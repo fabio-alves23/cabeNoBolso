@@ -29,6 +29,7 @@ public class ExpensePanel extends JPanel {
     private final Map<Integer, JCheckBox> participantChecks =
             new LinkedHashMap<>();
 
+    // Define as colunas e impede a edição direta pela tabela
     private final DefaultTableModel tableModel = new DefaultTableModel(
             new String[]{"Descrição", "Valor", "Tipo", "Classificação"}, 0) {
         @Override
@@ -45,6 +46,7 @@ public class ExpensePanel extends JPanel {
 
         setLayout(new BorderLayout(5, 5));
 
+        // Organiza os campos do formulário
         JPanel form = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(3, 5, 3, 5);
@@ -56,6 +58,7 @@ public class ExpensePanel extends JPanel {
         addField(form, c, 2, "Tipo:", typeCombo);
         addField(form, c, 3, "Prioridade (0 = essencial):", priorityField);
 
+        // Cria a área de seleção dos participantes
         participantPanel.setLayout(new BoxLayout(
                 participantPanel, BoxLayout.Y_AXIS));
 
@@ -64,11 +67,13 @@ public class ExpensePanel extends JPanel {
 
         addField(form, c, 4, "Participantes:", participantScroll);
 
+        // Cria os botões de gerenciamento
         JButton add = new JButton("Cadastrar");
         JButton update = new JButton("Alterar");
         JButton remove = new JButton("Excluir");
         JButton clear = new JButton("Limpar");
 
+        // Cadastra uma nova despesa
         add.addActionListener(e -> execute(() ->
                 controller.addExpense(
                         descriptionField.getText(),
@@ -78,32 +83,44 @@ public class ExpensePanel extends JPanel {
                         priorityField.getText()
                 )));
 
-        update.addActionListener(e -> execute(() ->
-                controller.updateExpense(
-                        table.getSelectedRow(),
-                        descriptionField.getText(),
-                        amountField.getText(),
-                        typeCombo.getSelectedIndex() == 1,
-                        getSelectedCodes(),
-                        priorityField.getText()
-                )));
+        // Altera a despesa selecionada
+        update.addActionListener(e -> execute(() -> {
+            int row = table.getSelectedRow();
 
+            if (row < 0) {
+                throw new PlanningException("Selecione uma despesa.");
+            }
+
+            controller.updateExpense(
+                    row,
+                    descriptionField.getText(),
+                    amountField.getText(),
+                    typeCombo.getSelectedIndex() == 1,
+                    getSelectedCodes(),
+                    priorityField.getText()
+            );
+        }));
+
+        // Exclui a despesa selecionada após confirmação
         remove.addActionListener(e -> execute(() -> {
             int row = table.getSelectedRow();
 
-            if (row < 0)
+            if (row < 0) {
                 throw new PlanningException("Selecione uma despesa.");
+            }
 
             int answer = JOptionPane.showConfirmDialog(
                     this, "Deseja excluir esta despesa?",
                     "Confirmação", JOptionPane.YES_NO_OPTION);
 
-            if (answer == JOptionPane.YES_OPTION)
+            if (answer == JOptionPane.YES_OPTION) {
                 controller.removeExpense(row);
+            }
         }));
 
         clear.addActionListener(e -> clearFields());
 
+        // Organiza os botões na parte inferior
         JPanel buttons = new JPanel();
         buttons.add(add);
         buttons.add(update);
@@ -114,15 +131,18 @@ public class ExpensePanel extends JPanel {
         add(new JScrollPane(table), BorderLayout.CENTER);
         add(buttons, BorderLayout.SOUTH);
 
+        // Preenche os campos ao selecionar uma despesa
         table.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting())
+            if (!e.getValueIsAdjusting()) {
                 fillFields();
+            }
         });
 
         updateParticipants();
         updateTable();
     }
 
+    // Adiciona os campos de formulário à interface
     private void addField(JPanel panel, GridBagConstraints c,
                           int row, String label, Component field) {
         c.gridy = row;
@@ -135,18 +155,21 @@ public class ExpensePanel extends JPanel {
         panel.add(field, c);
     }
 
+    // Retorna os códigos dos participantes selecionados
     private List<Integer> getSelectedCodes() {
         List<Integer> codes = new ArrayList<>();
 
         for (Map.Entry<Integer, JCheckBox> entry :
                 participantChecks.entrySet()) {
-            if (entry.getValue().isSelected())
+            if (entry.getValue().isSelected()) {
                 codes.add(entry.getKey());
+            }
         }
 
         return codes;
     }
 
+    // Atualiza a lista de participantes disponíveis
     public void updateParticipants() {
         participantPanel.removeAll();
         participantChecks.clear();
@@ -163,6 +186,7 @@ public class ExpensePanel extends JPanel {
         participantPanel.repaint();
     }
 
+    // Atualiza a tabela de despesas
     public void updateTable() {
         tableModel.setRowCount(0);
 
@@ -176,9 +200,13 @@ public class ExpensePanel extends JPanel {
         }
     }
 
+    // Preenche o formulário com os dados da despesa selecionada
     private void fillFields() {
         int row = table.getSelectedRow();
-        if (row < 0) return;
+
+        if (row < 0) {
+            return;
+        }
 
         Expense e = controller.getExpenses().get(row);
 
@@ -191,6 +219,7 @@ public class ExpensePanel extends JPanel {
 
         priorityField.setText(String.valueOf(e.getPriority()));
 
+        // Marca os participantes envolvidos na despesa
         for (Map.Entry<Integer, JCheckBox> entry :
                 participantChecks.entrySet()) {
 
@@ -201,14 +230,16 @@ public class ExpensePanel extends JPanel {
         }
     }
 
+    // Executa operações e atualiza a interface após alterações
     private void execute(Action action) {
         try {
             action.run();
             updateTable();
             clearFields();
 
-            if (onChange != null)
+            if (onChange != null) {
                 onChange.run();
+            }
 
         } catch (PlanningException | NumberFormatException e) {
             JOptionPane.showMessageDialog(
@@ -217,14 +248,16 @@ public class ExpensePanel extends JPanel {
         }
     }
 
+    // Limpa os campos e restaura as seleções padrão
     private void clearFields() {
         descriptionField.setText("");
         amountField.setText("");
         priorityField.setText("0");
         typeCombo.setSelectedIndex(0);
 
-        for (JCheckBox check : participantChecks.values())
+        for (JCheckBox check : participantChecks.values()) {
             check.setSelected(true);
+        }
 
         table.clearSelection();
     }
