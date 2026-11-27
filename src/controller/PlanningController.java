@@ -240,12 +240,14 @@ public class PlanningController {
 
     private long readMoney(String text) throws PlanningException {
         if (text == null || text.trim().isEmpty()) {
+            new Exception("RASTREAMENTO").printStackTrace();
             throw new PlanningException("Preencha o campo de valor.");
         }
 
         String value = text.trim();
 
-        if (value.contains(",")) {
+        // Com vírgula, ou no formato 1.000, o ponto separa os milhares
+        if (value.contains(",") || value.matches("\\d{1,3}(\\.\\d{3})+")) {
             value = value.replace(".", "").replace(",", ".");
         }
 
