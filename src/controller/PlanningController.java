@@ -245,7 +245,8 @@ public class PlanningController {
 
         String value = text.trim();
 
-        if (value.contains(",")) {
+        // Com vírgula, ou no formato 1.000, o ponto separa os milhares
+        if (value.contains(",") || value.matches("\\d{1,3}(\\.\\d{3})+")) {
             value = value.replace(".", "").replace(",", ".");
         }
 
