@@ -144,3 +144,9 @@ As evidências dos testes devem ser disponibilizadas na documentação ou na pas
 ## Autores
 
 Projeto acadêmico desenvolvido como atividade prática de programação em Java.
+-JOSÉ ARÔLDO MACIEL NETO 
+-LUANA MOREIRA COSTA 
+-FÁBIO ALVES DO NASCIMENTO 
+-Jonh Elber Silva SOUSA
+-ALEX BONFIM BARROS 
+-ANTÔNIO FELIPE MIRANDA DA SILVA 
